@@ -28,14 +28,16 @@ class Photo {
   final String thumbnailUrl;
 }
 
+Future<List<Photo>> fetchPhoto(Client client) async {
+  final response = await client
+      .get(Uri.parse("https://jsonplaceholder.typicode.com/photos"));
+  return parsePhoto(response.body);
+}
+
 List<Photo> parsePhoto(String response) {
   final parsed = (jsonDecode(response) as List).cast<Map<String, dynamic>>();
 
   return parsed.map<Photo>((json) => Photo.fromJson(json)).toList();
 }
 
-Future<List<Photo>> fetchPhoto(Client client) async {
-  final response = await client
-      .get(Uri.parse("https://jsonplaceholder.typicode.com/photos"));
-  return parsePhoto(response.body);
-}
+
